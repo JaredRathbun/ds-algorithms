@@ -33,7 +33,7 @@ public class ArrayGeneration {
         int[] array = new int[n];
 
         for (int i = 0; i < n; i++) {
-            array[i] = rand.nextInt(bound);
+            array[i] = rand.nextInt(bound) + 1;
         }
 
         // SHOULD BE REPLACED WITH MERGE SORT
