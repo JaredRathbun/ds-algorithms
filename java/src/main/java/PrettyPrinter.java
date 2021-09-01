@@ -1,47 +1,42 @@
 public class PrettyPrinter {
     public static void prettyPrint(int[] array, String text, Object[] result, boolean drawLines) {
-        String horizontalLine = "===";
-        for (int j = 0; j < array.length; j++) {
-            horizontalLine += "=====";
+        String indentedBorder = "\t+";
+        String upperAndLowerBorder = "===";
+        int horizontalLineLength = 0;
+
+        // Build a String to hold the indented border.
+        for (int i = 0; i < array.length; i++) {
+            final int len = 2 + String.valueOf(array[i]).length();
+            for (int j = 0; j < len; j++) {
+                indentedBorder += "-";
+                horizontalLineLength += len;
+            }
+            indentedBorder += "+";
         }
 
-        if (drawLines) {
-            System.out.println(horizontalLine);
+        // Draw the upper horizontal rule.
+        for (int i = 0; i < horizontalLineLength / 3; i++) {
+            upperAndLowerBorder += "=";
         }
+        upperAndLowerBorder += "===";
+        System.out.println(upperAndLowerBorder);
 
+        // Print out the text.
         System.out.println(text);
 
-
-        // Print the padding and another horizontal line.
-        for (int j = 0; j < array.length; j++) {
-            System.err.print("-----");
+        // Print the indented border, then the array.
+        System.out.println(indentedBorder);
+        System.out.print("\t|");
+        for (int i = 0; i < array.length; i++) {
+            System.out.printf(" %d |", array[i]);
         }
+        System.out.println("\n" + indentedBorder);
 
-        // Print the padding and then a single pipe to start the line.
-        System.err.print("\n");
-
-        System.err.print("|");
-
-        for (int j = 0; j < array.length; j++) {
-            System.err.printf(" %d |", array[j]);
-        }
-
-        System.err.print("\n");
-
-        for (int j = 0; j < array.length; j++) {
-            System.err.print("-----");
-        }
-
-        System.err.println("");
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        // Print the result.
         System.out.println("Result: " + result[0]);
-        System.out.println("Completed in " + result[1] + " calls.");
-        System.out.println(horizontalLine);
+        System.out.println("Total Number of Calls: " + result[1]);
+
+        // Print the last horizontal rule.
+        System.out.println(upperAndLowerBorder);
     }
 }

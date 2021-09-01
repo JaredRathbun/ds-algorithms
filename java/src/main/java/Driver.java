@@ -5,7 +5,7 @@ public class Driver {
     }
 
     public Driver(int[] array) {
-        PrettyPrinter.prettyPrint(array, "Performing binarySearch() on the following:", SearchingAlgorithms
+        PrettyPrinter.prettyPrint(array, "Performing binarySearch() on the following array:", SearchingAlgorithms
                 .binarySearch(22,0, array.length, array), true);
     }
 }
