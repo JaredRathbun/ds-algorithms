@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class SearchingAlgorithms {
 
@@ -15,25 +16,26 @@ public class SearchingAlgorithms {
      */
     public static Object[] binarySearch(int target, int start, int end, int[] array) {
         binarySearchCount++;
+
         if (!ArrayGeneration.isSorted(array)) {
             throw new IllegalArgumentException("Array must be sorted!");
         }
 
-        if (start == end && array[start] == target) {
-            System.out.println("HERE");
-            int tempCount = binarySearchCount;
-            binarySearchCount = 0;
-            return new Object[]{true, tempCount};
-        } else if (start == end && array[start] != target) {
-            System.out.println("IM HERE");
+        if (start == end) {
             int tempCount = binarySearchCount;
             binarySearchCount = 0;
             return new Object[]{false, tempCount};
-        } else {
-            int midIdx = start + (end - start) / 2;
-            int midVal = array[midIdx];
 
-            if (target < midVal) {
+        } else {
+            int midIdx = (int) Math.floor((end + start) / 2);
+
+            if (array[midIdx] == target) {
+                int tempCount = binarySearchCount;
+                binarySearchCount = 0;
+                return new Object[]{true, tempCount};
+            }
+
+            if (target < array[midIdx]) {
                 return binarySearch(target, start, midIdx, array);
             } else {
                 return binarySearch(target, midIdx + 1, end, array);

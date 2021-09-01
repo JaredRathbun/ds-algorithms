@@ -1,6 +1,6 @@
 public class PrettyPrinter {
     public static void prettyPrint(int[] array, String text, Object[] result, boolean drawLines) {
-        String horizontalLine = "";
+        String horizontalLine = "===";
         for (int j = 0; j < array.length; j++) {
             horizontalLine += "=====";
         }
@@ -11,12 +11,6 @@ public class PrettyPrinter {
 
         System.out.println(text);
 
-        // Calculate the center of the top line for neatness.
-        int spaceShift = horizontalLine.length() / array.length;
-        String padding = "";
-        for (int i = 0; i < spaceShift; i++) {
-            padding += "  ";
-        }
 
         // Print the padding and another horizontal line.
         for (int j = 0; j < array.length; j++) {
