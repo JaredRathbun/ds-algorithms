@@ -13,7 +13,7 @@ public interface Queue<T> extends Iterable<T> {
 
     public boolean removeAll(List<T> list);
 
-    public boolean contains(T data);
+    // public boolean contains(T data);
 
-    public boolean containsAll(List<T> list);
+    // public boolean containsAll(List<T> list);
 }

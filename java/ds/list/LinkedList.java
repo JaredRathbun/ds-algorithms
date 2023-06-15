@@ -22,20 +22,38 @@ import java.util.Objects;
 
 public class LinkedList<T extends Comparable<T>> implements List<T>, Queue<T> {
     
+    /**
+     * Pointers for the head and tail of the list.
+     */
     private Node<T> head, tail;
 
+    /**
+     * A flag for allowing null data to be added to the list.
+     */
+    private final boolean ALLOW_NULL_DATA = false;
+
+    /**
+     * Constructs a new {@code LinkedList} with no elements.
+     */
     public LinkedList() {
 
     }
 
+    /**
+     * Constructs a new {@code LinkedList} with the specified data.
+     * 
+     * @param data The data to add to the list.
+     */
     public LinkedList(T data) {
-        Objects.requireNonNull(data, "Data must not be null.");
+        if (!ALLOW_NULL_DATA)
+            Objects.requireNonNull(data, "Data must not be null.");
 
         head = new Node<>(data);
     }
 
     public void add(T data) {
-        Objects.requireNonNull(data, "Data must not be null.");
+        if (!ALLOW_NULL_DATA)
+            Objects.requireNonNull(data, "Data must not be null.");
 
         Node<T> newNode = new Node<>(data);
         tail.setNext(newNode);
@@ -46,21 +64,89 @@ public class LinkedList<T extends Comparable<T>> implements List<T>, Queue<T> {
 
     @Override
     public void addAll(List<T> list) {
-        Objects.requireNonNull(list, "List must not be null.");
+        if (!ALLOW_NULL_DATA)
+            Objects.requireNonNull(list, "List must not be null.");
 
         list.forEach((data) -> add(data));
     }
 
     @Override
     public Iterator<T> iterator() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'iterator'");
+        return new Iterator<T>() {
+
+            Node<T> currentHead = head;
+
+            @Override
+            public boolean hasNext() {
+                return (currentHead.getNext() != null);
+            }
+
+            @Override
+            public T next() {
+                Node<T> tempHead = head;
+                head = head.getNext();
+                return head.getData();
+            }
+            
+            @Override
+            public void remove() {
+
+            }
+        };
+    }
+
+    private Iterator<Node<T>> nodeIterator() {
+        return new Iterator<Node<T>>() {
+
+            private Node<T> currentHead = head;
+
+            @Override
+            public boolean hasNext() {
+                return (currentHead.getNext() != null);
+            }
+
+            @Override
+            public Node<T> next() {
+                Node<T> tempHead = head;
+                head = head.getNext();
+                return currentHead.getNext();
+            }
+
+            @Override
+            public void remove() {
+                Node<T> tempPrev = currentHead.getPrev();
+                Node<T> tempNext = currentHead.getNext();
+
+                if (tempPrev != null) {
+                    tempPrev.setNext(tempNext);
+                    tempNext.setPrev(tempPrev);
+                } else if (tempNext == null) {
+                    tempPrev.setNext(null);
+                } else {
+                    head = tempNext;
+                    tempNext.setPrev(head);
+                }
+            }
+        };
     }
 
     @Override
     public boolean remove(T data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'remove'");
+        if (!ALLOW_NULL_DATA)
+            Objects.requireNonNull(data, "Data must not be null.");
+        
+        Iterator<Node<T>> itr = nodeIterator();
+
+        while (itr.hasNext()) {
+            Node<T> element = itr.next();
+
+            if (element.getData().equals(data)) {
+                itr.remove();
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -106,12 +192,6 @@ public class LinkedList<T extends Comparable<T>> implements List<T>, Queue<T> {
     }
 
     @Override
-    public boolean contains() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'contains'");
-    }
-
-    @Override
     public boolean containsAll(List<T> list) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'containsAll'");
@@ -124,7 +204,7 @@ public class LinkedList<T extends Comparable<T>> implements List<T>, Queue<T> {
     }
 
     @Override
-    public T replace(T oldData, T newData) {
+    public boolean replace(T oldData, T newData) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'replace'");
     }
